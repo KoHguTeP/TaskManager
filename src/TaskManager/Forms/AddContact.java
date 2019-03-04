@@ -96,7 +96,7 @@ public class AddContact extends JDialog {
             }
         }
         if (flagEmail && flagPhone) {
-            Contact contact = new Contact(textFieldName.getText(), textFieldPhone.getText(), textFieldEmail.getText() + mails[comboBoxEndOfEmail.getSelectedIndex() - 1]);
+            Contact contact = new Contact(textFieldName.getText(), textFieldPhone.getText(), textFieldEmail.getText() + mails[comboBoxEndOfEmail.getSelectedIndex()]);
             contacts.add(contact);
             Contact.save(contacts, "Contacts");
             dispose();
