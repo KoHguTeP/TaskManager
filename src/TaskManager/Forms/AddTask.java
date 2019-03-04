@@ -1,4 +1,8 @@
-package TaskManager;
+package TaskManager.Forms;
+
+import TaskManager.Contact;
+import TaskManager.TaskList;
+import TaskManager.TaskListManager;
 
 import javax.swing.*;
 import java.awt.event.*;

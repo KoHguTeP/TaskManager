@@ -1,23 +1,26 @@
-package TaskManager;
+package TaskManager.Forms;
+
+import TaskManager.TaskList;
+import TaskManager.TaskListManager;
 
 import javax.swing.*;
 import java.awt.event.*;
 
-public class RemoveTask extends JDialog {
+public class AlertForm extends JDialog {
     private JPanel contentPane;
     private JButton buttonOK;
     private JButton buttonCancel;
     private JLabel labelName;
     private JLabel labelDescription;
+    private JLabel labelDate;
+    private JLabel labelContact;
     private TaskList taskList = new TaskList();
+    private RecreateForm recreateForm = new RecreateForm(- 1);
     private int index;
 
-    public JPanel getPanel1(){
-        return contentPane;
-    }
 
-    public RemoveTask(int index) {
-        if (index > -1) {
+    public AlertForm(int index) {
+        if (index > - 1) {
             this.index = index;
             taskList = TaskListManager.loadTaskList("File1");
             setContentPane(contentPane);
@@ -50,25 +53,33 @@ public class RemoveTask extends JDialog {
                     onCancel();
                 }
             }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-            labelName.setText(taskList.getTask(index).getName());
-            labelDescription.setText(taskList.getTask(index).getDescription());
+
+            labelName.setText("Название: " + taskList.getTask(index).getName());
+            labelDescription.setText("Описание: " + taskList.getTask(index).getDescription());
+            labelDate.setText("Дата события: " + taskList.getTask(index).getDate() + ". Время: " + taskList.getTask(index).getTime());
+            labelContact.setText("Привязанные контакты: " + taskList.getTask(index).getContact());
         }
     }
 
     private void onOK() {
-        TaskListManager.removeTask(taskList, index);
+        taskList.getTask(index).setCompleted(true);
         TaskListManager.saveTaskList(taskList, "File1");
         // add your code here
         dispose();
     }
 
     private void onCancel() {
+        recreateForm = new RecreateForm(index);
+        recreateForm.setResizable(false);
+        recreateForm.setTitle("Отложить");
+        recreateForm.pack();
+        recreateForm.setVisible(true);
         // add your code here if necessary
         dispose();
     }
 
     public static void main(String[] args) {
-        RemoveTask dialog = new RemoveTask(- 1);
+        AlertForm dialog = new AlertForm(0);
         dialog.pack();
         dialog.setVisible(true);
         System.exit(0);

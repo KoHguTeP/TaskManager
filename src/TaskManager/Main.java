@@ -1,5 +1,7 @@
 package TaskManager;
 
+import TaskManager.Forms.MainForm;
+
 import javax.swing.*;
 
 public class Main {
