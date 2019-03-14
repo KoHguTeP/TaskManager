@@ -15,10 +15,11 @@ public class Main {
         jFrame.pack();
         jFrame.setVisible(true);*/
 
-        JFrame jFrame = new JFrame("LOGIN");
+        JFrame jFrame = new JFrame("Авторизация");
         jFrame.setContentPane(new LoginForm().getPanel1());
         jFrame.setDefaultCloseOperation(jFrame.EXIT_ON_CLOSE);
         jFrame.pack();
         jFrame.setVisible(true);
+        jFrame.setResizable(false);
     }
 }

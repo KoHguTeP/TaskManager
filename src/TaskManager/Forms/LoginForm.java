@@ -1,8 +1,7 @@
 package TaskManager.Forms;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
+import TaskManager.Task;
+import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 
 import javax.swing.*;
@@ -30,6 +29,7 @@ public class LoginForm {
     private JButton buttonLogin;
     private JButton buttonRegistration;
     private JPanel panel1;
+    private RegistrationForm registrationForm;
 
     private static final String LOGIN = "";
     private static final String PASSWORD = "";
@@ -63,18 +63,32 @@ public class LoginForm {
                     doc.appendChild(root);
                     try {
                         try {
+                            //установка соединения
                             socket = new Socket("Localhost", 1024);
-
-                            System.out.println("Connection established");
 
                             out = new ObjectOutputStream(socket.getOutputStream());
                             in = new ObjectInputStream(socket.getInputStream());
+
+                            //отправка данных
                             out.writeObject(doc);
                             out.flush();
 
-                            System.out.println("Received response from server");
+                            //данные получены
+                            //Node node = (Node) in.readObject();
+                            //JOptionPane.showMessageDialog(null, in.readObject());
 
-                            JOptionPane.showMessageDialog(null, in.readObject());
+                            Document response = (Document) in.readObject();
+
+                            for (int i = 0; i < response.getElementsByTagName("task").getLength(); i++) {
+                                Task task = new Task(
+                                        ((Element) response.getElementsByTagName("task").item(i)).getAttribute("name"),
+                                        ((Element) response.getElementsByTagName("task").item(i)).getAttribute("description"),
+                                        ((Element) response.getElementsByTagName("task").item(i)).getAttribute("date"),
+                                        ((Element) response.getElementsByTagName("task").item(i)).getAttribute("time")
+                                );
+                                System.out.println("check");
+                            }
+
                         }
                         finally {
                             socket.close();
@@ -92,6 +106,16 @@ public class LoginForm {
                 } catch (ParserConfigurationException er) {
                     System.out.println(er.fillInStackTrace());
                 }
+            }
+        });
+        buttonRegistration.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                registrationForm = new RegistrationForm();
+                registrationForm.setTitle("Регистрация");
+                registrationForm.setResizable(false);
+                registrationForm.pack();
+                registrationForm.setVisible(true);
             }
         });
     }
