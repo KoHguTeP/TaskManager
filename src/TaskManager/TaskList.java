@@ -16,6 +16,10 @@ public class TaskList implements Serializable {
         taskList.add(task);
     }
 
+    public void addTask(Task task) {
+        taskList.add(task);
+    }
+
     public void addTask(String name, String description, String  date, String time, Contact contact) {
         Task task = new Task(name, description, date, time, contact);
         taskList.add(task);

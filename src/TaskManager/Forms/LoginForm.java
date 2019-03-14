@@ -1,6 +1,8 @@
 package TaskManager.Forms;
 
+import TaskManager.Contact;
 import TaskManager.Task;
+import TaskManager.TaskList;
 import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 
@@ -79,6 +81,7 @@ public class LoginForm {
 
                             Document response = (Document) in.readObject();
 
+                            TaskList taskList = new TaskList();
                             for (int i = 0; i < response.getElementsByTagName("task").getLength(); i++) {
                                 Task task = new Task(
                                         ((Element) response.getElementsByTagName("task").item(i)).getAttribute("name"),
@@ -86,9 +89,16 @@ public class LoginForm {
                                         ((Element) response.getElementsByTagName("task").item(i)).getAttribute("date"),
                                         ((Element) response.getElementsByTagName("task").item(i)).getAttribute("time")
                                 );
+                                if (((Element) response.getElementsByTagName("task").item(i)).getElementsByTagName("contact").getLength() > 0 ) {
+                                    Contact contact = new Contact(((Element)(((Element) response.getElementsByTagName("task").item(i)).getElementsByTagName("contact").item(0))).getAttribute("name"),
+                                            ((Element)(((Element) response.getElementsByTagName("task").item(i)).getElementsByTagName("contact").item(0))).getAttribute("phone"),
+                                            ((Element)(((Element) response.getElementsByTagName("task").item(i)).getElementsByTagName("contact").item(0))).getAttribute("email"));
+                                    task.setContact(contact);
+                                }
+                                taskList.addTask(task);
                                 System.out.println("check");
                             }
-
+                            System.out.println("check");
                         }
                         finally {
                             socket.close();
